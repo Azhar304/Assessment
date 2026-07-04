@@ -6,7 +6,7 @@ Full installation, environment, and run instructions for the calibrated object m
 
 - Python 3.10+
 - Windows / Linux / macOS
-- GPU recommended for training (CPU works for inference and evaluation)
+- GPU recommended for training (CPU works for inference, evaluation, and measurement)
 
 ## Install Dependencies
 
@@ -20,19 +20,21 @@ pip install -r requirements.txt
 
 For GPU training in Google Colab, install PyTorch with CUDA support. The local `requirements.txt` lists CPU-compatible versions; adjust torch/torchvision for your CUDA version if needed.
 
-## Step 1 — Camera Calibration
+## Step 1 - Camera Calibration
 
-### Generate ChArUco Board
+Generate the ChArUco board:
 
 ```powershell
 python calibration/generate_charuco_board.py
 ```
 
-Output: `calibration/charuco_board.png`
+Output:
 
-### Run Intrinsic Calibration
+```text
+calibration/charuco_board.png
+```
 
-Place 20+ calibration images in `calibration/images/`, then run:
+Place 20+ calibration images in `calibration/images/`, then run intrinsic calibration:
 
 ```powershell
 python calibration/calibrate_camera.py
@@ -45,29 +47,33 @@ calibration/results/camera_matrix.npy
 calibration/results/dist_coeffs.npy
 ```
 
-### Undistort Calibration Images (verification)
+Undistort calibration images for visual verification:
 
 ```powershell
 python calibration/undistorted_image.py
 ```
 
-Output: `calibration/undistorted/`
+Output:
 
-## Step 1 — Dataset Preparation
+```text
+calibration/undistorted/
+```
 
-### Undistort Raw Dataset Images
+## Step 1 - Dataset Preparation
 
-Place raw object images in `dataset/raw/images/`, then run:
+Place raw object images in `dataset/raw/images/`, then undistort them:
 
 ```powershell
 python calibration/undistort_dataset.py
 ```
 
-Output: `dataset/undistorted/images/`
+Output:
 
-### Split Dataset
+```text
+dataset/undistorted/images/
+```
 
-After labelling and exporting COCO annotations to `dataset/undistorted/annotations/instances_default.json`:
+After labelling and exporting COCO annotations to `dataset/undistorted/annotations/instances_default.json`, split the dataset:
 
 ```powershell
 python dataset/prepare_dataset.py
@@ -81,7 +87,7 @@ dataset/val/     (20%)
 dataset/test/    (10%)
 ```
 
-## Step 2 — Model Training
+## Step 2 - Model Training
 
 Training is performed in Google Colab using `models/mask_rcnn.ipynb`. Mount Google Drive, point paths to the prepared dataset, and run all cells.
 
@@ -91,9 +97,13 @@ After training, download the best weights to:
 models/maskrcnn.pth
 ```
 
-Training history is saved automatically to `models/training_history.json`.
+Training history is saved automatically to:
 
-## Step 2 — Evaluation
+```text
+models/training_history.json
+```
+
+## Step 2 - Evaluation
 
 Run test-set evaluation (requires `models/maskrcnn.pth`):
 
@@ -103,9 +113,9 @@ python models/evaluate.py
 
 Outputs metrics to `models/evaluation_metrics.json` and prints mAP, IoU, precision, recall, and F1.
 
-## Step 2 — Inference
+## Step 2 - Inference
 
-Run end-to-end inference on a single raw image (undistortion + segmentation):
+Run end-to-end inference on a single raw image:
 
 ```powershell
 python inference/run_inference.py path/to/image.jpg
@@ -126,6 +136,37 @@ inference/outputs/<name>_undistorted.jpg
 inference/outputs/<name>_annotated.jpg
 ```
 
-## Step 3 — Measurement (Pending)
+## Step 3 - Measurement
 
-The pixel-to-mm measurement pipeline in `measurement/` is not yet implemented. See `docs/MEASUREMENT_REPORT.md` for planned methodology.
+Run phone-cover measurement with a known-size reference object in the image:
+
+```powershell
+python measurement/measure_object.py path/to/image.jpg --reference-bbox x,y,width,height --reference-width-mm 85.6 --reference-height-mm 54.0
+```
+
+The reference bbox must be provided in processed image coordinates:
+
+```text
+x,y,width,height
+```
+
+Use `--skip-undistort` only if the input image is already undistorted.
+
+Outputs:
+
+```text
+measurement/outputs/<name>_measurement.jpg
+measurement/outputs/<name>_measurement.json
+```
+
+Validate 10+ measured samples after filling `measurement/validation_template.csv`:
+
+```powershell
+python measurement/validate_measurements.py measurement/validation_template.csv
+```
+
+This writes MAE and MPE summary metrics to:
+
+```text
+measurement/validation_summary.json
+```

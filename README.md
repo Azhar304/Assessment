@@ -1,6 +1,6 @@
 # Calibrated Object Measurement Project
 
-End-to-end computer vision pipeline for the XIS AI / Computer Vision technical assessment. The system calibrates a camera, segments a phone cover from images, and (in Step 3) will compute real-world metric measurements in millimetres.
+End-to-end computer vision pipeline for the XIS AI / Computer Vision technical assessment. The system calibrates a camera, segments a phone cover from images, and computes real-world metric measurements in millimetres.
 
 ## Project Status
 
@@ -8,7 +8,7 @@ End-to-end computer vision pipeline for the XIS AI / Computer Vision technical a
 |------|-------|--------|
 | Step 1 | Camera Calibration & Data Collection | Complete |
 | Step 2 | Model Training & Segmentation | Complete |
-| Step 3 | Pixel-to-MM Measurement | Not started |
+| Step 3 | Pixel-to-MM Measurement | Implemented, physical validation pending |
 
 ## Completed Capabilities
 
@@ -19,6 +19,8 @@ End-to-end computer vision pipeline for the XIS AI / Computer Vision technical a
 - Mask R-CNN training (15 epochs, Google Colab GPU)
 - Test-set evaluation with mAP, IoU, precision, recall, and F1
 - Inference script with undistortion and annotated mask output
+- Pixel-to-mm measurement script using a known-size reference object
+- Measurement validation helper for MAE and MPE
 
 ## Repository Structure
 
@@ -27,7 +29,7 @@ calibration/           # ChArUco board, calibration scripts, images, results
 dataset/               # Raw images, undistorted images, train/val/test splits
 models/                # Training notebook, config, weights, evaluation
 inference/             # Inference script and demo outputs
-measurement/           # Step 3 — pixel-to-mm pipeline (pending)
+measurement/           # Pixel-to-mm measurement pipeline
 docs/                  # All documentation
 requirements.txt
 README.md
@@ -55,6 +57,12 @@ Evaluate the model on the test set:
 python models/evaluate.py
 ```
 
+Measure a phone cover using a known reference object:
+
+```powershell
+python measurement/measure_object.py path/to/image.jpg --reference-bbox x,y,width,height --reference-width-mm 85.6 --reference-height-mm 54.0
+```
+
 ## Documentation
 
 | Document | Description |
@@ -63,7 +71,7 @@ python models/evaluate.py
 | [docs/CALIBRATION_REPORT.md](docs/CALIBRATION_REPORT.md) | Camera calibration method and results |
 | [docs/DATASET_CARD.md](docs/DATASET_CARD.md) | Dataset description and statistics |
 | [docs/TRAINING_REPORT.md](docs/TRAINING_REPORT.md) | Model architecture, training, and metrics |
-| [docs/MEASUREMENT_REPORT.md](docs/MEASUREMENT_REPORT.md) | Step 3 measurement methodology (pending) |
+| [docs/MEASUREMENT_REPORT.md](docs/MEASUREMENT_REPORT.md) | Pixel-to-mm measurement methodology and validation plan |
 
 ## Key Artifacts
 
@@ -72,3 +80,4 @@ python models/evaluate.py
 - Model weights: `models/maskrcnn.pth` (local, gitignored)
 - Training notebook: `models/mask_rcnn.ipynb`
 - Evaluation metrics: `models/evaluation_metrics.json`
+- Measurement script: `measurement/measure_object.py`
