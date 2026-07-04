@@ -95,7 +95,7 @@ NOTEBOOK_PATH = "models/mask_rcnn.ipynb"
 
 TRAINING_HISTORY = "models/training_history.json"
 
-MODEL_WEIGHTS = "models/maskrcnn_best.pth"
+MODEL_WEIGHTS = "models/maskrcnn.pth"
 
 GIT_POLICY = "keep_large_weights_in_drive_not_git"
 
@@ -112,3 +112,18 @@ FINAL_VALIDATION_LOSS = 0.08831389111123587
 BEST_VALIDATION_LOSS = 0.0873759237951354
 
 BEST_VALIDATION_EPOCH = 13
+
+
+# Evaluation Metrics (test set, 9 images)
+
+TEST_MAP_50 = 1.0
+
+TEST_MAP_50_95 = 0.9523
+
+TEST_MEAN_MASK_IOU = 0.9565
+
+TEST_PRECISION = 1.0
+
+TEST_RECALL = 1.0
+
+TEST_F1 = 1.0
