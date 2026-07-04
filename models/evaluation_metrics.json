@@ -1,0 +1,14 @@
+{
+    "test_images": 9,
+    "confidence_threshold": 0.5,
+    "mask_threshold": 0.5,
+    "mAP_50": 1.0,
+    "mAP_50_95": 0.9523,
+    "mean_mask_iou": 0.9565,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "true_positives": 9,
+    "false_positives": 0,
+    "false_negatives": 0
+}
