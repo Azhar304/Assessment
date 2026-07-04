@@ -22,6 +22,8 @@ venv/
 Thumbs.db
 
 outputs/
+measurement/outputs/
+measurement/validation_summary.json
 
 # Dataset source and generated intermediates
 dataset/raw/
