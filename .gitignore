@@ -8,7 +8,8 @@ venv/
 
 .ipynb_checkpoints/
 
-*.npy
+# *.npy
+*.pdf
 
 *.pth
 
@@ -22,10 +23,14 @@ Thumbs.db
 
 outputs/
 
+# Dataset source and generated intermediates
 dataset/raw/
-
 dataset/undistorted/
+dataset/train/
+dataset/val/
+dataset/test/
 
-calibration/checkerboard_images/
+# Generated calibration outputs
+calibration/undistorted/
 
 models/checkpoints/

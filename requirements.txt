@@ -1,0 +1,27 @@
+
+# Camera Calibration Dependencies
+
+# OpenCV (includes ArUco module)
+opencv-contrib-python==4.10.0.84
+
+# Numerical computations
+numpy==2.2.6
+
+# Image processing
+Pillow==11.3.0
+
+# PDF generation (for ChArUco board)
+reportlab==4.4.2
+
+# Plotting and visualization
+matplotlib==3.10.3
+
+# YAML support (for saving calibration parameters)
+PyYAML==6.0.2
+
+# Deep Learning — Model Training & Inference
+torch>=2.0.0
+torchvision>=0.15.0
+
+# COCO evaluation metrics
+pycocotools>=2.0.7
