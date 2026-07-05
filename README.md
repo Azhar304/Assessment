@@ -54,15 +54,75 @@ new measurement image
 ## Repository Structure
 
 ```text
-calibration/           ChArUco board, calibration scripts, calibration images, results
-dataset/               Raw images, undistorted images, COCO labels, train/val/test splits
-models/                Training notebook, model config, weights, evaluation utilities
-inference/             Single-image inference script and demo outputs
-measurement/           Pixel-to-mm measurement pipeline and validation artifacts
-docs/                  Required technical documentation
-requirements.txt       Python dependencies
-README.md              Project overview and quick start
+project-root/
+  calibration/
+    generate_charuco_board.py       Generate printable ChArUco board
+    calibrate_camera.py             Estimate camera intrinsics and distortion
+    undistorted_image.py            Undistort calibration images for review
+    undistort_dataset.py            Undistort raw object dataset images
+    charuco_board.png               Generated calibration target
+    images/                         22 calibration images
+    results/
+      camera_matrix.npy             Saved intrinsic camera matrix
+      dist_coeffs.npy               Saved OpenCV distortion coefficients
+    undistorted/                    Generated visual calibration outputs
+
+  dataset/
+    prepare_dataset.py              Split COCO labels into train/val/test
+    raw/
+      images/                       92 raw phone-cover images
+    undistorted/
+      images/                       92 undistorted object images
+      annotations/
+        instances_default.json      CVAT COCO instance segmentation export
+    train/
+      images/                       62 training images
+      annotations.json              Training COCO annotations
+    val/
+      images/                       19 validation images
+      annotations.json              Validation COCO annotations
+    test/
+      images/                       9 test images
+      annotations.json              Test COCO annotations
+
+  models/
+    mask_rcnn.ipynb                 Google Colab training notebook
+    config.py                       Training and evaluation configuration
+    model_utils.py                  Model loading and undistortion helpers
+    evaluate.py                     Test-set evaluation script
+    training_history.json           Train/validation loss history
+    evaluation_metrics.json         mAP, IoU, precision, recall, F1
+    maskrcnn.pth                    Trained weights, large artifact
+
+  inference/
+    run_inference.py                Single-image segmentation inference
+    outputs/
+      *_undistorted.jpg             Undistorted demo image
+      *_annotated.jpg               Mask overlay demo image
+
+  measurement/
+    measure_object.py               Single-image end-to-end metric demo
+    run_validation.py               Batch validation over 10 images
+    validate_measurements.py        MAE/MPE calculation from CSV
+    validation_results.csv          Ground truth and prediction table
+    validation_summary.json         Computed error summary
+    validation_images/              10 physical validation images
+    outputs/
+      *_measurement.jpg             Mask overlay with metric labels
+      *_measurement.json            Width, height, confidence, reference data
+
+  docs/
+    SETUP.md                        Installation and run guide
+    CALIBRATION_REPORT.md           Calibration method, parameters, error
+    DATASET_CARD.md                 Object, labelling, splits, statistics
+    TRAINING_REPORT.md              Architecture, config, metrics
+    MEASUREMENT_REPORT.md           Pixel-to-mm method and validation
+
+  requirements.txt                  Python dependencies
+  README.md                         Project overview and quick start
 ```
+
+Large generated artifacts such as the dataset folders, model weights, validation images, and output images may be shared through the companion Google Drive artifact folder if they are excluded from GitHub.
 
 ## Quick Start
 
