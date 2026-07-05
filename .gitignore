@@ -34,5 +34,6 @@ dataset/test/
 
 # Generated calibration outputs
 calibration/undistorted/
+measurement/validation_images/
 
 models/checkpoints/
